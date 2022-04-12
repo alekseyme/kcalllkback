@@ -16,18 +16,8 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {   
-        $users = User::with('manager')->orderBy('id', 'DESC')->get();
+        $users = User::with('manager')->orderBy('name', 'ASC')->get();
         return $users;
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -50,17 +40,6 @@ class UserController extends Controller
             'name' => $user->name,
             'message'=>'Пользователь успешно создан'
         ]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**

@@ -18,6 +18,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     Route::post('/me', 'AuthController@me');
     Route::post('/logout', 'AuthController@logout');
+
+    Route::post('/da/{rid}', 'AudioController@da');
 });
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
