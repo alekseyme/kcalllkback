@@ -7,8 +7,8 @@ use App\User;
 
 class Project extends Model
 {
-    protected $fillable = [
-        'name', 'tablename', 'changes', 'base_header', 'base_row'
+    protected $hidden = [
+        'created_at', 'updated_at'
     ];
 
     public function users()

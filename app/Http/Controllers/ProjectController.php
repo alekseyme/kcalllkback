@@ -16,7 +16,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::with('users')->orderBy('name', 'ASC')->get();
+        $projects = Project::orderBy('name', 'ASC')->get();
         return response($projects, 200);
     }
 
@@ -30,22 +30,6 @@ class ProjectController extends Controller
         $projects = auth()->user()->projects()->orderBy('name', 'ASC')->get();
 
         return response($projects, 200);
-    }
-    
-    public function editrow(Request $request, $id)
-    {
-        $base_prefix = '_base_';
-
-        $row = DB::table($base_prefix.$request->project)->where('id', $id);
-
-        $updateData = $request->except(['project']);
-
-        $row->update($updateData);
-
-        return response()->json([
-            'message'=>'Запись успешно обновлена',
-            'row'=>$row->first()
-        ]);
     }
 
     public function search(Request $request)
@@ -112,41 +96,13 @@ class ProjectController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $project = Project::create([
-            'name' => $request->name,
-            'tablename' => $request->tablename,
-            'base_header' => $request->base_header,
-            'base_row' => $request->base_row,
-        ]);
-
-        if($request->input('users'))
-        {
-            $project->users()->attach($request->input('users'));
-        }
-
-        return response()->json([
-            'status' => 200,
-            'name' => $project->name,
-            'tablename' => $project->tablename,
-            'message' => 'Проект успешно создан',
-        ]);
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
+    {        
         $project = Project::with('users')->find($id);
         return $project;
     }
@@ -162,12 +118,12 @@ class ProjectController extends Controller
     {
         $project = Project::find($id);
 
-        $project->name = $request->input('name');
-        $project->tablename = $request->input('tablename');
-        $project->base_header = $request->input('base_header');
-        $project->base_row = $request->input('base_row');
+        // $project->name = $request->input('name');
+        // $project->tablename = $request->input('tablename');
+        // $project->table_header_client = $request->input('table_header_client');
+        // $project->table_row_client = $request->input('table_row_client');
 
-        $project->update();
+        // $project->update();
 
         $project->users()->detach();
         if($request->input('users'))
@@ -177,23 +133,6 @@ class ProjectController extends Controller
 
         return response()->json([
             'message' => 'Проект успешно обновлён'
-        ]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {   
-        $project = Project::find($id);
-        $project->users()->detach();
-        $project->delete();
-
-        return response()->json([
-            'message' => 'Проект успешно удалён'
         ]);
     }
 }

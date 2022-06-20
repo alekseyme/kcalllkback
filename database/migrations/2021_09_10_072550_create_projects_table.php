@@ -17,8 +17,8 @@ class CreateProjectsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('tablename')->unique();
-            $table->string('base_header');
-            $table->string('base_row');
+            $table->string('table_header_client');
+            $table->string('table_row_client');
             $table->timestamps();
         });
     }
